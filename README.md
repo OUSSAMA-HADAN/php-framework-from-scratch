@@ -1,4 +1,4 @@
-# ShopFrame — PHP Mini Framework
+#  PHP Mini Framework
 
 A lightweight, hand-rolled PHP framework built with modern PHP 8+ features and PSR standards.  
 No ORM. No magic. Just clean architecture.
