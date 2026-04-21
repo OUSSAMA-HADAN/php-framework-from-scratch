@@ -30,7 +30,7 @@ No ORM. No magic. Just clean architecture.
 ## Installation
 
 ```bash
-git clone https://github.com/OUSSAMA-HADAN/shopframe.git
+git clone https://github.com/OUSSAMA-HADAN/php-framework-from-scratch.git
 cd shopframe
 composer install
 cp .env.example .env
