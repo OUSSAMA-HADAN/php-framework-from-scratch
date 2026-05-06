@@ -1,4 +1,4 @@
-# ShopFrame — PHP Mini Framework
+#  PHP Mini Framework
 
 A lightweight, hand-rolled PHP framework built with modern PHP 8+ features and PSR standards.  
 No ORM. No magic. Just clean architecture.
@@ -30,7 +30,7 @@ No ORM. No magic. Just clean architecture.
 ## Installation
 
 ```bash
-git clone https://github.com/your-username/shopframe.git
+git clone https://github.com/OUSSAMA-HADAN/php-framework-from-scratch.git
 cd shopframe
 composer install
 cp .env.example .env
