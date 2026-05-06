@@ -3,9 +3,11 @@
 declare(strict_types=1);
 
 use App\Controllers\AuthController;
-use App\Controllers\CategoriesController;
+use App\Controllers\CupController;
 use App\Controllers\HomeController;
-use App\Controllers\ProductsController;
+use App\Controllers\MatcheController;
+use App\Controllers\ProfileController;
+
 use App\Middleware\AuthMiddleware;
 use League\Route\RouteGroup;
 use League\Route\Router;
@@ -32,23 +34,18 @@ return function (Router $router, ContainerInterface $container) {
     // -------------------------------------------------------
     $router->group('', function (RouteGroup $router) {
 
-        // Products
-        $router->get('/products',                   [ProductsController::class, 'index']);
-        $router->get('/products/create',            [ProductsController::class, 'create']);
-        $router->post('/products',                  [ProductsController::class, 'store']);
-        $router->get('/product/{id:number}',        [ProductsController::class, 'show']);
-        $router->get('/product/{id:number}/edit',   [ProductsController::class, 'edit']);
-        $router->post('/product/{id:number}/update',[ProductsController::class, 'update']);
-        $router->post('/product/{id:number}/delete',[ProductsController::class, 'destroy']);
+        // Cups
+        $router->get('/cups',                      [CupController::class, 'index']);
+        $router->get('/cups/{id:number}',          [CupController::class, 'show']);
+        $router->post('/cups/{id:number}/join',    [CupController::class, 'join']);
 
-        // Categories
-        $router->get('/categories',                   [CategoriesController::class, 'index']);
-        $router->get('/categories/create',            [CategoriesController::class, 'create']);
-        $router->post('/categories',                  [CategoriesController::class, 'store']);
-        $router->get('/category/{id:number}',         [CategoriesController::class, 'show']);
-        $router->get('/category/{id:number}/edit',    [CategoriesController::class, 'edit']);
-        $router->post('/category/{id:number}/update', [CategoriesController::class, 'update']);
-        $router->post('/category/{id:number}/delete', [CategoriesController::class, 'destroy']);
+        // Matches
+        $router->get('/matches',                       [MatcheController::class, 'index']);
+        $router->get('/matches/{id:number}',           [MatcheController::class, 'show']);
+        $router->post('/matches/{id:number}/score',    [MatcheController::class, 'submitScore']);
+
+        // Profile
+        $router->get('/profile', [ProfileController::class, 'show']);
 
     })->middleware($authMiddleware);
 };

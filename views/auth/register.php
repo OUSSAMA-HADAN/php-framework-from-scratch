@@ -1,51 +1,52 @@
-<?php $this->layout('layout', ['title' => 'Register']) ?>
+<?php $this->layout('layout', ['title' => 'Créer un compte']) ?>
 
 <div class="row justify-content-center mt-5">
     <div class="col-md-4">
-        <div class="card shadow-sm">
-            <div class="card-header bg-dark text-white text-center py-3">
-                <h5 class="mb-0 fw-bold"><i class="bi bi-person-plus me-2"></i>Create Account</h5>
-            </div>
-            <div class="card-body p-4">
+        <div class="vf-card p-4">
+            <p class="vf-section-title mb-1">Inscription</p>
+            <h5 class="fw-bold text-white mb-4">Créer un compte</h5>
 
-                <?php if (!empty($error)): ?>
-                    <div class="alert alert-danger py-2">
-                        <i class="bi bi-exclamation-triangle me-1"></i>
-                        <?= $this->e($error) ?>
-                    </div>
-                <?php endif ?>
+            <?php if (!empty($error)): ?>
+                <div class="alert border-0 mb-4" style="background:rgba(239,68,68,.12);color:#f87171;border-radius:8px">
+                    <i class="bi bi-exclamation-triangle me-2"></i><?= $this->e($error) ?>
+                </div>
+            <?php endif ?>
 
-                <form action="/register" method="POST">
+            <form action="/register" method="POST">
 
-                    <div class="mb-3">
-                        <label for="email" class="form-label fw-semibold">Email</label>
-                        <input type="email" id="email" name="email" class="form-control"
-                               placeholder="you@example.com" required autofocus>
-                    </div>
+                <div class="mb-3">
+                    <label class="form-label">Nom d'utilisateur</label>
+                    <input type="text" name="username" class="form-control"
+                           placeholder="Ex: Zizou" required autofocus>
+                </div>
 
-                    <div class="mb-3">
-                        <label for="password" class="form-label fw-semibold">Password</label>
-                        <input type="password" id="password" name="password" class="form-control"
-                               placeholder="••••••••" required>
-                    </div>
+                <div class="mb-3">
+                    <label class="form-label">Email</label>
+                    <input type="email" name="email" class="form-control"
+                           placeholder="toi@exemple.com" required>
+                </div>
 
-                    <div class="mb-4">
-                        <label for="confirm" class="form-label fw-semibold">Confirm Password</label>
-                        <input type="password" id="confirm" name="confirm" class="form-control"
-                               placeholder="••••••••" required>
-                    </div>
+                <div class="mb-3">
+                    <label class="form-label">Mot de passe</label>
+                    <input type="password" name="password" class="form-control"
+                           placeholder="••••••••" required>
+                </div>
 
-                    <div class="d-grid">
-                        <button type="submit" class="btn btn-dark btn-lg">
-                            <i class="bi bi-person-check me-1"></i>Create Account
-                        </button>
-                    </div>
+                <div class="mb-4">
+                    <label class="form-label">Confirmer le mot de passe</label>
+                    <input type="password" name="confirm" class="form-control"
+                           placeholder="••••••••" required>
+                </div>
 
-                </form>
-            </div>
-            <div class="card-footer text-center text-muted py-3">
-                Already have an account? <a href="/login">Sign in</a>
-            </div>
+                <button type="submit" class="btn btn-vf w-100">
+                    <i class="bi bi-person-check me-2"></i>Créer mon compte
+                </button>
+
+            </form>
+
+            <p class="text-center text-secondary mt-3 mb-0" style="font-size:.85rem">
+                Déjà un compte ? <a href="/login" style="color:var(--vf-green)">Se connecter</a>
+            </p>
         </div>
     </div>
 </div>

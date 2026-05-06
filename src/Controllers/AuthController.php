@@ -41,10 +41,10 @@ class AuthController extends AbstractController
             ]);
         }
 
-        // Store user ID in session — this is what AuthMiddleware checks.
-        $_SESSION['user_id'] = $user->getId();
+        $_SESSION['user_id']   = $user->getId();
+        $_SESSION['user_role'] = $user->getRole();
 
-        return $this->redirect('/products');
+        return $this->redirect('/cups');
     }
 
     // Shows the registration form.
@@ -58,33 +58,31 @@ class AuthController extends AbstractController
     public function register(ServerRequestInterface $request): ResponseInterface
     {
         $body     = $request->getParsedBody();
-        $email    = trim((string) ($body['email'] ?? ''));
-        $password = (string) ($body['password'] ?? '');
-        $confirm  = (string) ($body['confirm'] ?? '');
+        $email    = trim((string) ($body['email']    ?? ''));
+        $username = trim((string) ($body['username'] ?? ''));
+        $password = (string) ($body['password']      ?? '');
+        $confirm  = (string) ($body['confirm']       ?? '');
 
-        // Basic validation before touching the database.
-        if (empty($email) || empty($password)) {
+        if (empty($email) || empty($username) || empty($password)) {
             return $this->render('auth/register', [
-                'error' => 'Email and password are required.',
+                'error' => 'Tous les champs sont obligatoires.',
             ]);
         }
 
         if ($password !== $confirm) {
             return $this->render('auth/register', [
-                'error' => 'Passwords do not match.',
+                'error' => 'Les mots de passe ne correspondent pas.',
             ]);
         }
 
-        // Check if the email is already registered.
         if ($this->userRepository->findByEmail($email) !== null) {
             return $this->render('auth/register', [
-                'error' => 'An account with this email already exists.',
+                'error' => 'Un compte existe déjà avec cet email.',
             ]);
         }
 
-        // Hash the password before storing — never store plain text.
         $hash = password_hash($password, PASSWORD_BCRYPT);
-        $this->userRepository->create($email, $hash);
+        $this->userRepository->create($email, $username, $hash);
 
         return $this->redirect('/login');
     }

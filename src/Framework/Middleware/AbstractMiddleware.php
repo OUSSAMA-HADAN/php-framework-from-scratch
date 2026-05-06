@@ -16,9 +16,7 @@ use Psr\Http\Message\ServerRequestInterface;
 abstract class AbstractMiddleware implements MiddlewareInterface
 {
     // Used by child middleware to create redirect or custom responses.
-    public function __construct(protected ResponseFactoryInterface $responseFactory)
-    {
-    }
+    public function __construct(protected ResponseFactoryInterface $responseFactory){}
 
     // Must be implemented by each concrete middleware.
     // Call $handler->handle($request) to pass the request down the chain,

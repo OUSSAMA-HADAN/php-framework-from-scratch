@@ -10,8 +10,8 @@ class User
 {
     private int $id;
     private string $email;
-    // Stores the bcrypt hash — never the plain-text password.
     private string $password;
+    private string $role = 'player';
 
     public function getId(): int
     {
@@ -41,5 +41,15 @@ class User
     public function setPassword(string $password): void
     {
         $this->password = $password;
+    }
+
+    public function getRole(): string
+    {
+        return $this->role;
+    }
+
+    public function setRole(string $role): void
+    {
+        $this->role = $role;
     }
 }

@@ -17,8 +17,8 @@ class UserMapper
 
         $user->setId((int) $row['id']);
         $user->setEmail((string) $row['email']);
-        // Store the hash as-is — password_verify() will compare it later.
         $user->setPassword((string) $row['password']);
+        $user->setRole((string) ($row['role'] ?? 'player'));
 
         return $user;
     }

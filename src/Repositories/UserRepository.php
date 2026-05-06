@@ -9,56 +9,53 @@ use App\Mappers\UserMapper;
 use Framework\Database\DatabaseInterface;
 use Framework\Database\UserRepositoryInterface;
 
-// Handles all database operations for the User entity.
-// Calls stored procedures defined in the database — no raw SQL built here.
 class UserRepository implements UserRepositoryInterface
 {
-    // Shared PDO connection injected by the DI container.
     private DatabaseInterface $database;
+    private UserMapper        $mapper;
 
-    // Mapper that converts raw PDO rows into User entities.
-    private UserMapper $mapper;
-
-    // PHP-DI resolves and injects both dependencies via constructor.
     public function __construct(DatabaseInterface $database, UserMapper $mapper)
     {
         $this->database = $database;
         $this->mapper   = $mapper;
     }
 
-    // Finds a user by email — called by AuthController during login.
     public function findByEmail(string $email): ?User
     {
         $pdo  = $this->database->getConnection();
-
-        $stmt = $pdo->prepare('CALL sp_get_user_by_email(?)');
+        $stmt = $pdo->prepare('
+            SELECT u.id_user AS id, u.email, u.password, r.nom AS role
+            FROM   users u
+            JOIN   role  r ON u.id_role = r.id_role
+            WHERE  u.email = ?
+            LIMIT  1
+        ');
         $stmt->execute([$email]);
-
-        $row = $stmt->fetch();
+        $row  = $stmt->fetch();
 
         return $row !== false ? $this->mapper->map($row) : null;
     }
 
-    // Finds a user by ID — called by AuthMiddleware to verify the session is still valid.
     public function findById(int $id): ?User
     {
         $pdo  = $this->database->getConnection();
-
-        $stmt = $pdo->prepare('CALL sp_get_user_by_id(?)');
+        $stmt = $pdo->prepare('
+            SELECT u.id_user AS id, u.email, u.password, r.nom AS role
+            FROM   users u
+            JOIN   role  r ON u.id_role = r.id_role
+            WHERE  u.id_user = ?
+            LIMIT  1
+        ');
         $stmt->execute([$id]);
-
-        $row = $stmt->fetch();
+        $row  = $stmt->fetch();
 
         return $row !== false ? $this->mapper->map($row) : null;
     }
 
-    // Inserts a new user record via the stored procedure sp_create_user.
-    // Password must already be bcrypt-hashed before calling this method.
-    public function create(string $email, string $hashedPassword): void
+    public function create(string $email, string $username, string $hashedPassword): void
     {
         $pdo  = $this->database->getConnection();
-
-        $stmt = $pdo->prepare('CALL sp_create_user(?, ?)');
-        $stmt->execute([$email, $hashedPassword]);
+        $stmt = $pdo->prepare('INSERT INTO users (email, username, password) VALUES (?, ?, ?)');
+        $stmt->execute([$email, $username, $hashedPassword]);
     }
 }

@@ -15,6 +15,6 @@ interface UserRepositoryInterface extends RepositoryInterface
     // Finds a user by their ID — used to rehydrate the user from the session.
     public function findById(int $id): ?User;
 
-    // Creates a new user with the given email and bcrypt-hashed password.
-    public function create(string $email, string $hashedPassword): void;
+    // Creates a new user with the given email, username and bcrypt-hashed password.
+    public function create(string $email, string $username, string $hashedPassword): void;
 }
